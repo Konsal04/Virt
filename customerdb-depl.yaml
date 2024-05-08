@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: customerdb-depl
+  labels:
+    app: customerdb
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: customerdb
+  template:
+    metadata:
+      labels:
+        app: customerdb
+    spec:
+      containers:
+      - name: customerdb
+        image: postresql
+        ports:
+        - containerPort: https://console.cloud.google.com/storage/browser/mage-zoomcamp-mage-matt-palmer-3
+        ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: customerdb-service
+  labels:
+    app: customerdb
+spec:
+  selector:
+    app: customerdb
+  type: NodePort
+  ports:
+  - port: 80
+    nodePort: 31364
+    targetPort: 8006
+    protocol: TCP
+    name: http
